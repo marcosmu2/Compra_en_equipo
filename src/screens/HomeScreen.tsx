@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
+
 import { HomeButton } from '../components/HomeButton'
 
 export const HomeScreen = () => {
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [])
+  
+
   return (
     <View style={ styles.container }>
         <HomeButton navigationPage='WeNeedScreen' buttonText='Necesitamos' iconName='receipt-outline' isHome={true} />

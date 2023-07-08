@@ -1,32 +1,49 @@
 import React, { useEffect } from 'react'
-import { KeyboardAvoidingView, Platform,  StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform,  SectionList,  StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import mainStyles from '../styles/main'
-import { FlatListCosas } from '../components/FlatListCosas';
 import { useWeNeed } from '../hooks/useWeNeed';
 import { AddCosa } from '../components/AddCosa';
 import colors from '../styles/colors';
+import { ItemCosa } from '../components/ItemCosa';
 
 export const WeNeedScreen = () => {
 
-  const { getCosas, changeText,cosas,createCosa,tipoSelected,settipoSelected } = useWeNeed();
+  const { getCosas, changeText,cosas,createCosa,tipoSelected,settipoSelected, sectionCosas } = useWeNeed();
 
   useEffect(() => {
     getCosas();
   }, [])
+
+  console.log(sectionCosas);
   
 
   return (
     <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <AddCosa createCosa={createCosa} changeText={changeText} tipoSelected={tipoSelected} settipoSelected={settipoSelected} />
-
-          <View style={{...styles.inputContainer,  marginTop: 20, marginBottom: 10, alignItems: 'center'}}>
-                  <Text style={styles.listHeaderText}>
-                    Lista de compras
-                  </Text>
-          </View>
-          <FlatListCosas cosas={cosas} getEvent={() => getCosas()} />
+          <SectionList
+            sections={sectionCosas}
+            renderItem={({item}) => (
+              <TouchableOpacity disabled={true} activeOpacity={0.7} onPress={() => clickEvent(item) }>
+                <ItemCosa cosa={item} showOnlyName={false} /> 
+              </TouchableOpacity>
+               ) }
+            keyExtractor={(item, index) => item.id + index}
+            renderSectionHeader={(section : {title}) => (
+              <View>
+                <AddCosa 
+                  createCosa={createCosa} 
+                  changeText={changeText} 
+                  tipoSelected={tipoSelected} 
+                  settipoSelected={settipoSelected} />
+                <View style={{...styles.inputContainer,  marginTop: 20, marginBottom: 10, alignItems: 'center'}}>
+                        <Text style={styles.listHeaderText}>
+                          Lista de compras
+                        </Text>
+                </View>
+              </View>
+            )}
+          ></SectionList>
       </KeyboardAvoidingView>
   )
 }

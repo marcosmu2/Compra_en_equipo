@@ -32,7 +32,12 @@ export const Tipos : TipoCosas[] = [
 
 export type Cosas = {
     id: string
-    name : string,
-    tipo : string,
+    name : string
+    tipo : string
     isCompleted : boolean
+}
+
+export type SectionCosas = {
+    title : string
+    data: Cosas[]
 }

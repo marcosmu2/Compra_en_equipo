@@ -1,5 +1,5 @@
 import react, { useState } from "react";
-import { Cosas, Tipos } from "../shared/types";
+import { Cosas, SectionCosas, Tipos } from "../shared/types";
 import firebase from '../database/firebase';
 
 
@@ -7,7 +7,8 @@ export const useWeNeed = () => {
   
   const [tipoSelected, settipoSelected] = useState(Tipos[0].value);
   const [needed, setNeeded] = useState('');
-  const [cosas, setCosas] = useState<Cosas[]>([])
+  const [cosas, setCosas] = useState<Cosas[]>([]);
+  const [sectionCosas, setSectionCosas] = useState<SectionCosas[]>([]);
 
   const createCosa = async() =>  {
     await firebase.db.collection('Cosas').add({
@@ -36,6 +37,8 @@ export const useWeNeed = () => {
                                                                   data.push({id:doc.id, name : docData.Name, tipo: docData.Tipo, isCompleted: docData.IsCompleted});
                                                                 });
                                                     setCosas(data);
+                                                    const sectionData : SectionCosas[] = [{ data : data, title : "HOla Mundo 2" }]
+                                                    setSectionCosas(sectionData);
                                               })
   }
 
@@ -47,6 +50,8 @@ export const useWeNeed = () => {
                                                                   data.push({id:doc.id, name : docData.Name, tipo: docData.Tipo,isCompleted: docData.IsCompleted});
                                                                 });
                                                     setCosas(data);
+                                                    const sectionData : SectionCosas[] = [{ data : data, title : "HOla Mundo 2" }]
+                                                    setSectionCosas(sectionData);
                                               })
   }
 
@@ -58,6 +63,8 @@ export const useWeNeed = () => {
                                                                   data.push({id:doc.id, name : docData.Name, tipo: docData.Tipo,isCompleted: docData.IsCompleted});
                                                                 });
                                                     setCosas(data);
+                                                    const sectionData : SectionCosas[] = [{ data : data, title : "HOla Mundo 2" }]
+                                                    setSectionCosas(sectionData);
                                               })
   }
 
@@ -86,6 +93,7 @@ export const useWeNeed = () => {
       updateIsCompleted,
       tipoSelected,
       settipoSelected,
-      cosas
+      cosas,
+      sectionCosas
   }
 }

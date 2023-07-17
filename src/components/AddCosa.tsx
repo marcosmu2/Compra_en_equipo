@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { Picker } from '@react-native-picker/picker'
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import mainStyles from '../styles/main'
 import colors from '../styles/colors'
@@ -14,30 +15,48 @@ interface Props {
 
 
 export const AddCosa = ({changeText, createCosa, settipoSelected, tipoSelected}:Props) => {
+  const [disabledButton, setDisabledButton] = useState(false);
+  const onPressIn = () => {
+    setDisabledButton(true);
+  };
+
+  const endEditing = () => {
+    setDisabledButton(false);
+  }
+
   return (
     <View style={styles.inputContainer}>
-              <TextInput 
+              <TextInput
                   style={ styles.inputStyle }
                   placeholder="Que nesecitamos?"
                   autoCapitalize="words"
-                  placeholderTextColor='rgba(0, 128, 128, 0.3)'
+                  placeholderTextColor="rgba(0, 128, 128, 0.3)"
+                  onPressIn={onPressIn}
                   onChangeText={(value) => changeText(value)}
+                  onEndEditing={endEditing}
               />
               <Picker
-                style={{marginVertical:10}}
+                style={{ marginVertical: 10 }}
                 dropdownIconColor={colors.primaryDark}
                 dropdownIconRippleColor={colors.secondary}
                 selectedValue={tipoSelected}
-                onValueChange={(itemValue, itemIndex) =>
+                onValueChange={(itemValue) =>
                   settipoSelected(itemValue)
                 }>
                   {
-                    Tipos.map(tipo => 
+                    Tipos.map(tipo =>
                     <Picker.Item key={tipo.value} style={styles.inputSelect} color={colors.primaryDark} label={tipo.name} value={tipo.value} /> 
                     )
                   }
               </Picker>
-              <TouchableOpacity style={styles.addButton} onPress={createCosa}>
+              <TouchableOpacity 
+                  style={
+                    {...styles.addButton,
+                     opacity: disabledButton ? 0.5 : 1,
+                    }
+                  }  
+                  disabled={disabledButton}
+                  onPress={createCosa}>
                 <Text style={styles.buttonText}>Agregar</Text>
               </TouchableOpacity>
           </View>
@@ -47,7 +66,7 @@ const styles = StyleSheet.create({
     inputContainer:{
       ...mainStyles.homeContainer,
       marginHorizontal : 20,
-      marginBottom : 10
+      marginBottom : 10,
     },
     inputStyle: {
         borderColor: 'rgba(0,0,0,0.3)',
@@ -72,7 +91,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginHorizontal: 5,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonText: {
         fontSize: 20,

@@ -12,10 +12,7 @@ export const WeNeedScreen = () => {
 
   useEffect(() => {
     getCosas();
-  }, [])
-
-  console.log(sectionCosas);
-  
+  }, [])  
 
   return (
     <KeyboardAvoidingView

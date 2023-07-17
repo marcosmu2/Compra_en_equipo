@@ -11,12 +11,14 @@ export const useWeNeed = () => {
   const [sectionCosas, setSectionCosas] = useState<SectionCosas[]>([]);
 
   const createCosa = async() =>  {
-    await firebase.db.collection('Cosas').add({
-      Name : needed,
-      Tipo : tipoSelected,
-      IsCompleted : false
-    });
-    getCosas();
+    if(needed){
+      await firebase.db.collection('Cosas').add({
+          Name : needed,
+          Tipo : tipoSelected,
+          IsCompleted : false
+        });
+      getCosas();
+    }
   }
 
   const updateIsCompleted = async(id : string, isCompleted : boolean) => {
@@ -76,8 +78,6 @@ export const useWeNeed = () => {
       // Eliminar cada documento de la colección
       const deletePromises = querySnapshot.docs.map((doc) => doc.ref.delete());
       await Promise.all(deletePromises);
-
-      console.log('Colección eliminada exitosamente');
   } catch (error) {
     console.error('Error al eliminar la colección:', error);
   }
